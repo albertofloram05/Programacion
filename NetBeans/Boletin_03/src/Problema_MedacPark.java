@@ -1,5 +1,5 @@
 import java.util.Scanner; // IMPORTAMOS LA LIBRERIA SCANNER
-public class MedacPark {
+public class Problema_MedacPark {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in); // DECLARAMOS LA VARIABLE SCANNER
         
@@ -7,11 +7,17 @@ public class MedacPark {
         
         int opcion1 = 0;
         int opcion2 = 0;
+        String opcion3 = " ";
         double precioBase = 0;
         String opcionElegida = " ";
         int edad = 0;
         double precioTotal = 0;
         String dia = " ";
+        boolean familiaNumerosa = false;
+        String categoriaEdad = " ";
+        double subtotalEdad = 0;
+        double subtotalDia = 0;
+        String ajusteDia = " ";
 
         
         
@@ -61,58 +67,96 @@ public class MedacPark {
         else if (edad < 4) {
             System.out.println("-----TICKET-----");
             System.out.printf("\nPase -- %s", opcionElegida);
-            System.out.print("\nPrecio -- GRATIS");
+            System.out.print("\nIMPORTE FINAL A PAGAR -- 0.00 eur (GRATIS)");
             System.exit(0);
         }
         else if (edad >= 4 && edad <= 12) {
-            precioTotal = precioBase * 0.75;
+            subtotalEdad = precioBase * 0.75;
+            categoriaEdad = "(Infantil)";
+            
         }
         else if (edad >= 13 && edad <= 64) {
-            precioTotal = precioBase;
+            subtotalEdad = precioBase;
+            categoriaEdad = "(Adulto)";
         }
         else {
-            precioTotal = precioBase * 0.70;
+            subtotalEdad = precioBase * 0.70;
+            categoriaEdad = "(Senior)";
         }
         System.out.print("Elige un dia de la semana en formato numerico (1 al 7): ");
         opcion2 = sc.nextInt();
         switch (opcion2) {
             case 1:
                 dia = "Lunes";
+                ajusteDia = "Tarifa ordinaria";
+                subtotalDia = subtotalEdad;
                 break;
             case 2:
                 dia = "Martes";
+                ajusteDia = "Tarifa ordinaria";
+                subtotalDia = subtotalEdad;
                 break;
             
             case 3:
                 dia = "Miercoles";
-                precioTotal -= 5;
+                subtotalDia = subtotalEdad - 5;
+                ajusteDia = "Dia del espectador (-5.00 eur)";
                 break;
                 
             case 4:
                 dia = "Jueves";
+                ajusteDia = "Tarifa ordinaria";
+                subtotalDia = subtotalEdad;
                 break;
                 
             case 5:
                 dia = "Viernes";
+                ajusteDia = "Tarifa ordinaria";
+                subtotalDia = subtotalEdad;
                 break;
                 
             case 6:
                 dia = "Sabado";
-                precioTotal *= 1.10;
+                subtotalDia = subtotalEdad * 1.10;
+                ajusteDia = "Fin de semana (+10% del subtotal)";
                 break;
                 
             case 7:
                 dia = "Domingo";
-                precioTotal *= 1.10;
+                subtotalDia = subtotalEdad * 1.10;
+                ajusteDia = "Fin de semana (+10% del subtotal)";
                 break;
                 
             default:
                 System.out.print("ERROR. Dia no reconocible");
                 System.exit(0);
         }
-        System.out.print("\n-----TICKET-----\n");
+        sc.nextLine();
+        System.out.print("Dinos si sois familia numerosa (S/n): ");
+        opcion3 = sc.nextLine();
+        
+        switch (opcion3) {
+            case "S":
+                familiaNumerosa = true;
+                precioTotal = subtotalDia * 0.85;
+                break;
+                
+            case "n":
+                familiaNumerosa = false;
+                precioTotal = subtotalDia;
+                break;
+            
+            default:
+                System.out.print("ERROR. Opcion incorrecta");
+                System.exit(0);
+        }
+        
+        System.out.print("\n---------------TICKET---------------\n");
         System.out.printf("\nPase -- %s", opcionElegida);
-        System.out.printf("\nDia -- %s", dia);
-        System.out.printf("\nPrecio -- %.2f", precioTotal);
+        System.out.printf("\nPrecio base -- %s", precioBase);
+        System.out.printf("\nTarifa (dia) -- %s", ajusteDia);
+        System.out.printf("\nDescuento por familia numerosa: %b", familiaNumerosa);
+        System.out.printf("\nIMPORTE FINAL A PAGAR -- %.2f eur", precioTotal);
+        System.out.print("\n---------------MEDAC PARK---------------\n");
     }
 }
